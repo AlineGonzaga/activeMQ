@@ -1,4 +1,4 @@
-package br.com.caelum.modelo;
+package modelo;
 
 import java.io.Serializable;
 

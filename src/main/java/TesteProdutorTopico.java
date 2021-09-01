@@ -1,5 +1,10 @@
+import modelo.Pedido;
+import modelo.PedidoFactory;
+
 import javax.jms.*;
 import javax.naming.InitialContext;
+import javax.xml.bind.JAXB;
+import java.io.StringWriter;
 
 public class TesteProdutorTopico {
 
@@ -14,10 +19,19 @@ public class TesteProdutorTopico {
 
         Destination topico = (Destination) context.lookup("loja");
 
-
         MessageProducer producer = session.createProducer(topico);
 
-        Message message = session.createTextMessage("<pedido><id>4324</id></pedido>");
+        Pedido pedido = new PedidoFactory().geraPedidoComValores();
+
+//        StringWriter writer = new StringWriter();
+//
+//        JAXB.marshal(pedido, writer);
+//
+//        String xml = writer.toString();
+//        System.out.println(xml);
+
+        Message message = session.createObjectMessage(pedido);
+
        // message.setBooleanProperty("ebook", false);
         producer.send(message);
 

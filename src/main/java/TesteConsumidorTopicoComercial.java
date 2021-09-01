@@ -1,4 +1,6 @@
 
+import modelo.Pedido;
+
 import javax.jms.*;
 import javax.naming.InitialContext;
 import java.util.Scanner;
@@ -6,6 +8,8 @@ import java.util.Scanner;
 public class TesteConsumidorTopicoComercial {
 
     public static void main(String[] args) throws Exception {
+
+        System.setProperty("org.apache.activemq.SERIALIZABLE_PACKAGES","*");
 
         InitialContext context = new InitialContext();
         ConnectionFactory factory = (ConnectionFactory) context.lookup("ConnectionFactory");
@@ -24,10 +28,11 @@ public class TesteConsumidorTopicoComercial {
             @Override
             public void onMessage(Message message) {
 
-                TextMessage textMessage = (TextMessage)message;
+                ObjectMessage objectMessage = (ObjectMessage)message;
 
                 try {
-                    System.out.println(textMessage.getText());
+                    Pedido pedido = (Pedido) objectMessage.getObject();
+                    System.out.println(pedido.getCodigo());
                 } catch (JMSException e) {
                     e.printStackTrace();
                 }
