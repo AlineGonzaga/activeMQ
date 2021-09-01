@@ -18,10 +18,10 @@ public class TesteProduttorFila {
 
         MessageProducer producer = session.createProducer(fila);
 
-        for(int i = 0; i < 1000; i ++) {
-            Message message = session.createTextMessage("<pedido><id>" + i + "</id></pedido>");
+      //  for(int i = 0; i < 1000; i ++) {
+            Message message = session.createTextMessage("<pedido><id>13</id></pedido>");
             producer.send(message);
-        }
+     //   }
 
         session.close();
         connection.close();

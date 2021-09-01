@@ -12,7 +12,7 @@ public class TesteConsumidorFila {
 
         Connection connection = factory.createConnection();
         connection.start();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(true, Session.SESSION_TRANSACTED);
 
         Destination fila = (Destination) context.lookup("financeiro");
         MessageConsumer consumer = session.createConsumer(fila );
@@ -20,18 +20,16 @@ public class TesteConsumidorFila {
         consumer.setMessageListener(new MessageListener() {
             @Override
             public void onMessage(Message message) {
-
-                TextMessage textMessage = (TextMessage)message;
-
                 try {
-                    System.out.println(textMessage.getText());
-                } catch (JMSException e) {
+                     TextMessage textMessage = (TextMessage)message;
+                    // message.acknowledge();
+                    session.rollback();
+                     System.out.println(textMessage.getText());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
         });
-
 
         new Scanner(System.in).nextLine();
 
